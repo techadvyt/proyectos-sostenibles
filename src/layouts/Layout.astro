@@ -1,0 +1,33 @@
+---
+import { Font } from "astro:assets";
+import "@/styles/globals.css";
+import { RetroGrid } from "@/components/ui/retro-grid";
+import { Navbar } from "@/components/navbar";
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "ODIS - Asignatura TEAMS", description = "Web oficial de la asignatura TEAMS y proyectos de alumnos." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es" class="dark h-full antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <Font cssVariable="--font-geist" />
+    <Font cssVariable="--font-geist-mono" />
+  </head>
+  <body class="min-h-full flex flex-col relative overflow-x-hidden bg-black text-white font-sans">
+    <RetroGrid client:load class="opacity-40" />
+    <Navbar client:load />
+    <main class="relative z-10 flex-1">
+      <slot />
+    </main>
+  </body>
+</html>

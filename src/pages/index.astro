@@ -1,0 +1,85 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { RainbowButton } from "@/components/ui/rainbow-button";
+import { Marquee } from "@/components/ui/marquee";
+
+const allProjects = await getCollection("projects");
+const shuffledProjects = [...allProjects].sort(() => Math.random() - 0.5);
+const firstRow = shuffledProjects.slice(0, Math.ceil(shuffledProjects.length / 2));
+const secondRow = shuffledProjects.slice(Math.ceil(shuffledProjects.length / 2));
+---
+
+<Layout>
+  <div class="flex flex-col items-center">
+    <section class="w-full max-w-7xl px-6 md:py-16 flex flex-col items-center text-center overflow-hidden">
+      <div class="relative group p-1 mb-8">
+        <div class="absolute inset-0 bg-emerald-500/20 blur-xl group-hover:bg-emerald-500/40 transition-all duration-500" />
+        <span class="relative px-3 py-1 text-xs font-bold tracking-widest uppercase text-emerald-400 border border-emerald-400/50 rounded-full">
+          IES Puertas del Campo
+        </span>
+      </div>
+
+      <h1 class="text-6xl md:text-9xl font-black tracking-tighter mb-8 bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">
+        Nuestros proyectos
+        sostenibles
+      </h1>
+
+      <p class="max-w-2xl text-xl md:text-2xl text-muted-foreground mb-12 font-medium leading-relaxed">
+        En esta página web se recogen los distintos proyectos ecológicos que se han realizado en el IES Puertas del Campo.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-6 mb-24 z-20">
+        <a href="/proyectos">
+          <ShimmerButton className="px-10 py-4 font-black text-lg text-white">
+            <span class="relative z-10 flex items-center gap-3">
+              Ver proyectos
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </ShimmerButton>
+        </a>
+        <a href="/info">
+          <RainbowButton className="px-10 py-4 text-lg size-full rounded-full" variant="outline" size="lg">
+            Información
+          </RainbowButton>
+        </a>
+      </div>
+
+      <div class="relative flex w-full flex-col items-center justify-center overflow-hidden mb-16 gap-4">
+        <Marquee pauseOnHover className="[--duration:20s]">
+          {firstRow.map((p: CollectionEntry<"projects">) => (
+            <div class="relative h-full w-80 cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] p-6 transition-all">
+              <span class="font-bold text-emerald-400 text-sm truncate w-full block">{p.data.title}</span>
+              <blockquote class="mt-2 text-[11px] text-zinc-400 line-clamp-2 leading-snug">
+                {p.data.description}
+              </blockquote>
+              <div class="mt-3 pt-3 border-t border-white/5 w-full flex">
+                <span class="text-[9px] text-zinc-600 font-medium uppercase tracking-tight truncate">
+                  {p.data.members.join(" • ")}
+                </span>
+              </div>
+            </div>
+          ))}
+        </Marquee>
+        <Marquee reverse pauseOnHover className="[--duration:20s]">
+          {secondRow.map((p: CollectionEntry<"projects">) => (
+            <div class="relative h-full w-80 cursor-pointer overflow-hidden rounded-xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] p-6 transition-all">
+              <span class="font-bold text-emerald-400 text-sm truncate w-full block">{p.data.title}</span>
+              <blockquote class="mt-2 text-[11px] text-zinc-400 line-clamp-2 leading-snug">
+                {p.data.description}
+              </blockquote>
+              <div class="mt-3 pt-3 border-t border-white/5 w-full flex">
+                <span class="text-[9px] text-zinc-600 font-medium uppercase tracking-tight truncate">
+                  {p.data.members.join(" • ")}
+                </span>
+              </div>
+            </div>
+          ))}
+        </Marquee>
+        <div class="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
+        <div class="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
+      </div>
+    </section>
+  </div>
+</Layout>

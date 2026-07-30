@@ -1,0 +1,63 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { MagicCard } from "@/components/ui/magic-card";
+import { SparklesText } from "@/components/ui/sparkles-text";
+
+const projects = await getCollection("projects");
+---
+
+<Layout title="Proyectos - ODIS" description="Proyectos de TEAMS del IES Puertas del Campo">
+  <div class="min-h-screen px-6 md:px-24 py-12">
+    <div class="max-w-7xl mx-auto">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors mb-12 group"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        Volver
+      </a>
+
+      <header class="mb-10">
+        <SparklesText className="text-4xl md:text-6xl font-black mb-4" colors={{first: "#05ff05", second: "#1a8208"}} client:load>Proyectos</SparklesText>
+        <p class="text-muted-foreground text-lg">
+          Estos son los proyectos que se han hecho por el alumnado de 4º en TEAMS :)
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((p: CollectionEntry<"projects">) => (
+          <a href={`/blog/${p.id}`}>
+            <MagicCard className="group relative flex flex-col p-8 border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all overflow-hidden h-full cursor-pointer" client:load>
+              <BorderBeam size={150} duration={10} delay={Math.random() * 5} client:load />
+
+              <div class="flex justify-between items-start mb-6">
+                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded border border-emerald-500/20">
+                  {p.data.course}
+                </span></div>
+
+              <h3 class="text-2xl font-bold mb-4 group-hover:text-emerald-400 transition-colors">{p.data.title}</h3>
+              <p class="text-muted-foreground text-sm flex-1 mb-6 line-clamp-3">
+                {p.data.description}
+              </p>
+
+              <div class="space-y-4 pt-6 border-t border-white/5">
+                <div class="flex items-start gap-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  <div class="text-xs text-emerald-100/70">
+                    <span class="font-bold">Miembros:</span> {
+                      p.data.members.map((m: string, i: number) => (
+                        (i === p.data.members.length - 1 ? "y "+m : m + ", ")
+                      )).join("").replace(", y", " y ")
+                    }
+                  </div>
+                </div>
+              </div>
+            </MagicCard>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
