@@ -4,7 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://odis.pages.dev',
+  site: 'https://techadvyt.github.io',
+  base: '/proyectos-sostenibles',
   vite: {
     plugins: [tailwindcss()],
     resolve: {
